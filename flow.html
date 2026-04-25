@@ -1,379 +1,352 @@
-```react
-import React, { useState } from 'react';
-import { 
-  Coins, Network, Building, Globe, Briefcase, Landmark, HeartHandshake,
-  ExternalLink, FileText, Target, CheckSquare, Info
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complementary Pathways実践フロー</title>
 
-// NotebookLMのアップロード資料（論文・レポート原本）に基づくURLと出典に修正
-const flowData = [
-  {
-    id: 1,
-    shortTitle: "資金調達",
-    title: "資金調達モデルの構築",
-    point: "難民本人が渡航時に支払う負担を最小限に抑えながら、持続的にプログラムを運営できる資金調達モデルを検討",
-    keywords: ["負担を最小限に抑え", "持続的にプログラムを運営", "資金調達モデル"],
-    checklist: [
-      "難民本人が前払いできない初期費用（渡航費やビザ代等）をカバーする仕組みが構築されているか？",
-      "多様な資金源（大学、財団、民間等）に基づく分散型の資金モデルになっているか？"
-    ],
-    stakeholders: {
-      hub: ["資金提供者", "中間組織"],
-      host: ["受入機関"],
-      origin: ["現地パートナー"]
-    },
-    actions: [
-      { role: "ハブ", text: "財団等から初期運営費や渡航費ローンを調達", project: "各種", country: "グローバル", flag: "🌍", source: "Davitti と Vankova - 2025", url: "https://doi.org/10.1080/15562948.2024.2385980" },
-      { role: "ハブ", text: "就労成功時に投資家にリターンを支払う成果報酬型モデル（SIB）を活用", project: "KOTO SIB", country: "フィンランド", flag: "🇫🇮", source: "Davitti と Vankova - 2025", url: "https://doi.org/10.1080/15562948.2024.2385980" },
-      { role: "受入側", text: "大学の授業料免除や学生の少額課徴金等で費用をカバー", project: "WUSC", country: "カナダ", flag: "🇨🇦", source: "Sabchev et al. - Financing Complementary Education...", url: "https://refugeehub.ca/" },
-      { role: "送出し側", text: "パスポート取得等の少額の初期費用を現地で支援", project: "RefugePoint等", country: "ケニア", flag: "🇰🇪", source: "TBB Global Evaluation 2020 Final", url: "https://www.talentbeyondboundaries.org/s/TBB-Global-Evaluation-2020-Final-External.pdf" }
-    ]
-  },
-  {
-    id: 2,
-    shortTitle: "受入先開拓",
-    title: "受入れ先の開拓",
-    point: "受入主体となる企業や学校にアプローチし、受入れにあたり生じるコストや求められる支援、期待される効果について十分な説明を行う",
-    keywords: ["企業や学校にアプローチ", "生じるコストや求められる支援", "期待される効果について十分な説明"],
-    checklist: [
-      "受入機関に対して、受入れにかかるコストと求める支援の責任範囲を事前に明確に提示しているか？",
-      "自治体、商工会議所、大学コンソーシアムなど、多様なアクターを巻き込んで受入枠を開拓しているか？"
-    ],
-    stakeholders: {
-      hub: ["中間組織"],
-      host: ["就業支援事業者", "受入機関"],
-      origin: []
-    },
-    actions: [
-      { role: "ハブ・受入側", text: "企業に人材の売り込み（ピッチ）を実施し、求人枠を獲得", project: "Displaced Talent Mobility Pilot", country: "イギリス", flag: "🇬🇧", source: "Zanzuchi - Building Refugee-Inclusive Labour Mobility...", url: "https://www.migrationpolicy.org/research/refugee-inclusive-labour-mobility-visa-evaluation" },
-      { role: "ハブ・受入側", text: "業界団体等を巻き込み、複数の雇用主に一括アプローチ", project: "EMPP", country: "カナダ", flag: "🇨🇦", source: "Dorst - Engaging Employers in Growing Refugee Labor...", url: "https://www.migrationpolicy.org/research/engaging-employers-refugee-labor-pathways" },
-      { role: "受入側", text: "大学のコンソーシアムや国際化部門が受入枠の開拓を推進", project: "UNICORE", country: "イタリア", flag: "🇮🇹", source: "Sabchev et al. - Financing Complementary Education...", url: "https://refugeehub.ca/" }
-    ]
-  },
-  {
-    id: 3,
-    shortTitle: "候補者募集",
-    title: "候補者の募集・選抜",
-    point: "受入側の具体的なニーズに基づき、現地パートナーと連携して候補者を募集し、公正なスキル評価や事前の期待値調整を行う",
-    keywords: ["具体的なニーズに基づき", "公正なスキル評価", "事前の期待値調整"],
-    checklist: [
-      "信頼のある現地NGOや難民主導組織と連携し、候補者を発掘する関係性を構築しているか？",
-      "正確な情報を周知し、候補者に誤った期待を持たせないための事前調整（期待値調整）を行っているか？"
-    ],
-    stakeholders: {
-      hub: ["中間組織"],
-      host: ["受入機関"],
-      origin: ["現地パートナー"]
-    },
-    actions: [
-      { role: "ハブ", text: "人材DBを活用し、ニーズとスキルをマッチング", project: "TBB", country: "カナダ・豪州", flag: "🇦🇺", source: "Higgins et al. - 2023 - Refugees as Skilled Migrants", url: "https://doi.org/10.1007/s11205-023-03130-9" },
-      { role: "送出し側", text: "現地NGO等がスクリーニングや履歴書作成を支援し、コミュニティへ情報周知と期待値調整を行う", project: "RefugePoint等", country: "ケニア", flag: "🇰🇪", source: "TBB Global Evaluation 2020 Final", url: "https://www.talentbeyondboundaries.org/s/TBB-Global-Evaluation-2020-Final-External.pdf" },
-      { role: "受入側", text: "企業や学校が書類選考やオンライン面接で採用・入学を決定", project: "EMPP", country: "カナダ", flag: "🇨🇦", source: "Dorst - Engaging Employers in Growing Refugee Labor...", url: "https://www.migrationpolicy.org/research/engaging-employers-refugee-labor-pathways" }
-    ]
-  },
-  {
-    id: 4,
-    shortTitle: "入国前教育",
-    title: "入国前教育の実施",
-    point: "語学・職業教育やオリエンテーションを提供し、スキル面での準備を行う",
-    keywords: ["語学・職業教育やオリエンテーション", "スキル面での準備"],
-    checklist: [
-      "受入国で求められる言語要件や実務スキルに直結した事前研修を提供しているか？",
-      "受入国での生活インフラや職場文化に関する、実務的なオリエンテーションが含まれているか？"
-    ],
-    stakeholders: {
-      hub: [],
-      host: [],
-      origin: ["現地パートナー"]
-    },
-    actions: [
-      { role: "送出し側", text: "渡航前の第一庇護国で、現地の機関が語学・文化オリエンテーションや実務的な職業訓練を直接提供", project: "IOM等 / Triple Win等", country: "世界各地", flag: "🌍", source: "Fratzke - Refugee Resettlement and Complementary...", url: "https://www.migrationpolicy.org/research/refugee-resettlement-complementary-pathways" }
-    ]
-  },
-  {
-    id: 5,
-    shortTitle: "受入手続き",
-    title: "入国に向けた手続き",
-    point: "安全かつスムーズに滞在国から出国できるよう、関係機関との調整やビザ取得のサポートを行う",
-    keywords: ["安全かつスムーズに滞在国から出国", "関係機関との調整", "ビザ取得のサポート"],
-    checklist: [
-      "第一庇護国から合法的に出国するための調整を現地政府・国際機関等と交渉・合意できているか？",
-      "パスポート等の代替文書の許容やビザ要件の緩和について、受入国政府と交渉・合意できているか？"
-    ],
-    stakeholders: {
-      hub: ["中間組織"],
-      host: ["受入国政府"],
-      origin: ["国連・政府機関"]
-    },
-    actions: [
-      { role: "ハブ", text: "代替書類の交渉やビザ申請の進行を実務的に管理", project: "Healthcare Pilot", country: "イギリス", flag: "🇬🇧", source: "Zanzuchi - Building Refugee-Inclusive Labour Mobility...", url: "https://www.migrationpolicy.org/research/refugee-inclusive-labour-mobility-visa-evaluation" },
-      { role: "送出し側", text: "出発国政府等が合法的な出国許可や代替渡航文書を柔軟に発行", project: "ETM", country: "ニジェール", flag: "🇳🇪", source: "Carrera Nunez et al. - 2025 - Global Asylum...", url: "https://link.springer.com/book/10.1007/978-3-031-72272-9" },
-      { role: "受入側", text: "ビザ要件を緩和し、迅速かつ優先的に審査・発給", project: "EMPP", country: "カナダ", flag: "🇨🇦", source: "Dorst - Engaging Employers in Growing Refugee Labor...", url: "https://www.migrationpolicy.org/research/engaging-employers-refugee-labor-pathways" }
-    ]
-  },
-  {
-    id: 6,
-    shortTitle: "受入体制整備",
-    title: "地域の受入れ体制の構築",
-    point: "支援団体や地域コミュニティのネットワークを形成し、難民が円滑に地域に統合できる環境を整備",
-    keywords: ["地域コミュニティのネットワークを形成", "円滑に地域に統合できる環境"],
-    checklist: [
-      "当事者コミュニティや市民グループを含めた、社会全体（Whole-of-Society）での受入体制を構築できているか？",
-      "受入機関と地域の支援団体等の間で、役割分担が明確になっているか？"
-    ],
-    stakeholders: {
-      hub: [],
-      host: ["伴走支援団体", "自治体"],
-      origin: []
-    },
-    actions: [
-      { role: "受入側", text: "市民ボランティアや自治体が、空港出迎えや住居手配など生活の立ち上げを伴走", project: "Community Sponsorship", country: "イギリス", flag: "🇬🇧", source: "Fratzke - Refugee Resettlement and Complementary...", url: "https://www.migrationpolicy.org/research/refugee-resettlement-complementary-pathways" },
-      { role: "受入側", text: "大学内の学生グループがスポンサーとなり生活を支援", project: "WUSC", country: "カナダ", flag: "🇨🇦", source: "Mude と Baker - Possibilities of Educational Pathways", url: "https://livedplacespublishing.com/" }
-    ]
-  },
-  {
-    id: 7,
-    shortTitle: "定住支援",
-    title: "定住支援",
-    point: "難民特有の事情を考慮し、トラウマに配慮したケアや、在留資格等に関する法的支援・定住支援を行う",
-    keywords: ["難民特有の事情を考慮", "トラウマに配慮したケア", "法的支援・定住支援"],
-    checklist: [
-      "在留資格やメンタルケアに関して、専門家による相談体制が構築されているか？",
-      "入国直後から住居の確保や生活環境の整備をサポートする体制が構築されているか？"
-    ],
-    stakeholders: {
-      hub: [],
-      host: ["伴走支援団体", "自治体"],
-      origin: []
-    },
-    actions: [
-      { role: "受入側", text: "地域のNGOや支援団体が、語学学習やトラウマケア、職場・学校への統合支援を継続的に実施", project: "Pathways Japan等", country: "日本", flag: "🇯🇵", source: "Husseini - 2025 - International Education as...", url: "https://doi.org/10.1080/15562948.2025.2573941" },
-      { role: "受入側", text: "企業が定住支援機関に費用を支払い、専門的な伴走支援を委託", project: "Skilled Refugee Labour", country: "豪州", flag: "🇦🇺", source: "Higgins et al. - 2023 - Refugees as Skilled Migrants", url: "https://doi.org/10.1007/s11205-023-03130-9" }
-    ]
-  },
-  {
-    id: 8,
-    shortTitle: "進路支援",
-    title: "進路支援",
-    point: "定住・永住を見据えた長期的なキャリアパスが構築できるよう、就労支援・進学支援を行う",
-    keywords: ["定住・永住を見据えた", "長期的なキャリアパスが構築", "就労支援・進学支援"],
-    checklist: [
-      "長期的なキャリア形成に向けた語学・職業能力の向上のための仕組みがあるか？",
-      "就職活動を伴走支援する体制が構築されているか？"
-    ],
-    stakeholders: {
-      hub: [],
-      host: ["受入機関", "就業支援事業者"],
-      origin: []
-    },
-    actions: [
-      { role: "受入側", text: "企業や大学、就業支援事業者が、本人の免許取得や卒業後のキャリア形成を長期的に支援", project: "Leadership for Syria等", country: "ドイツ", flag: "🇩🇪", source: "Sabchev et al. - Financing Complementary Education...", url: "https://refugeehub.ca/" },
-      { role: "受入側", text: "就労や進学を通じて、定住・永住へのルートに乗るためのサポートを行う", project: "EMPP等", country: "カナダ", flag: "🇨🇦", source: "Vankova - 2024 - Refugee Labour Mobility to the EU", url: "https://doi.org/10.1093/rsq/hdad023" }
-    ]
-  }
-];
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-const highlightText = (text, keywords) => {
-  let elements = [];
-  let currentText = text;
+  <!-- React & ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 
-  keywords.forEach((keyword, idx) => {
-    if (!currentText.includes(keyword)) return;
-    const parts = currentText.split(keyword);
-    if (parts.length > 1) {
-      elements.push(parts[0]);
-      elements.push(
-        <strong key={idx} className="text-[#00428B] font-bold">
-          {keyword}
-        </strong>
-      );
-      currentText = parts.slice(1).join(keyword);
-    }
-  });
-  elements.push(currentText);
-  return elements.length > 0 ? elements : text;
-};
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-export default function Dashboard() {
-  const [activeStepId, setActiveStepId] = useState(1);
-  const activeStep = flowData.find(s => s.id === activeStepId);
+  <style>
+    .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+    .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+    .scrollbar-thin::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
 
-  const getStakeholderIcon = (name) => {
-    const iconClass = "w-3.5 h-3.5 md:w-4 md:h-4 flex-shrink-0 text-[#00428B]";
-    if (name.includes('資金提供')) return <Coins className={iconClass} />;
-    if (name.includes('中間組織')) return <Network className={iconClass} />;
-    if (name.includes('受入機関') || name.includes('学校')) return <Building className={iconClass} />;
-    if (name.includes('現地パートナー')) return <Globe className={iconClass} />;
-    if (name.includes('就業支援')) return <Briefcase className={iconClass} />;
-    if (name.includes('政府') || name.includes('国連')) return <Landmark className={iconClass} />;
-    if (name.includes('伴走') || name.includes('自治体') || name.includes('団体')) return <HeartHandshake className={iconClass} />;
-    return <Info className={iconClass} />;
-  };
+  <script type="text/babel">
+    const { useState } = React;
 
-  const ROLES = ['ハブ', '受入側', '送出し側'];
+    // --- アイコンコンポーネント（CDNエラーを回避するため直接SVG化） ---
+    const IconBase = ({ className, children }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        {children}
+      </svg>
+    );
+    const Coins = ({ className }) => <IconBase className={className}><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></IconBase>;
+    const Network = ({ className }) => <IconBase className={className}><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></IconBase>;
+    const Building = ({ className }) => <IconBase className={className}><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></IconBase>;
+    const Globe = ({ className }) => <IconBase className={className}><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></IconBase>;
+    const Briefcase = ({ className }) => <IconBase className={className}><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></IconBase>;
+    const Landmark = ({ className }) => <IconBase className={className}><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></IconBase>;
+    const HeartHandshake = ({ className }) => <IconBase className={className}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08v0c.82.82 2.13.85 3 .07l2.07-1.9a2.82 2.82 0 0 1 3.79 0l2.96 2.66"/><path d="m18 15-2-2"/><path d="m15 18-2-2"/></IconBase>;
+    const ExternalLink = ({ className }) => <IconBase className={className}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></IconBase>;
+    const FileText = ({ className }) => <IconBase className={className}><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></IconBase>;
+    const Target = ({ className }) => <IconBase className={className}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></IconBase>;
+    const CheckSquare = ({ className }) => <IconBase className={className}><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></IconBase>;
+    const Info = ({ className }) => <IconBase className={className}><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></IconBase>;
 
-  return (
-    <div className="h-[100dvh] w-full bg-[#F4F6F9] flex flex-col font-sans text-[#333333] overflow-hidden select-none">
-      
-      {/* 0. グローバルヘッダー (タイトル) */}
-      <div className="bg-[#002855] text-white px-3 py-1.5 md:px-4 md:py-2 flex-none shadow-sm z-20 flex justify-between items-center">
-        <div className="text-[10px] md:text-sm font-bold tracking-widest opacity-95">
-          Complementary Pathways実践フロー
-        </div>
-      </div>
+    // --- データ定義 ---
+    const flowData =[
+      {
+        id: 1, shortTitle: "資金調達", title: "資金調達モデルの構築",
+        point: "難民本人が渡航時に支払う負担を最小限に抑えながら、持続的にプログラムを運営できる資金調達モデルを検討",
+        keywords:["負担を最小限に抑え", "持続的にプログラムを運営", "資金調達モデル"],
+        checklist:[
+          "難民本人が前払いできない初期費用（渡航費やビザ代等）をカバーする仕組みが構築されているか？",
+          "多様な資金源（大学、財団、民間等）に基づく分散型の資金モデルになっているか？"
+        ],
+        stakeholders: { hub:["資金提供者", "中間組織"], host: ["受入機関"], origin: ["現地パートナー"] },
+        actions:[
+          { role: "ハブ", text: "財団等から初期運営費や渡航費ローンを調達", project: "各種", country: "グローバル", flag: "🌍", source: "Davitti と Vankova - 2025", url: "https://doi.org/10.1080/15562948.2024.2385980" },
+          { role: "ハブ", text: "就労成功時に投資家にリターンを支払う成果報酬型モデル（SIB）を活用", project: "KOTO SIB", country: "フィンランド", flag: "🇫🇮", source: "Davitti と Vankova - 2025", url: "https://doi.org/10.1080/15562948.2024.2385980" },
+          { role: "受入側", text: "大学の授業料免除や学生の少額課徴金等で費用をカバー", project: "WUSC", country: "カナダ", flag: "🇨🇦", source: "Sabchev et al. - Financing Complementary Education...", url: "https://refugeehub.ca/" },
+          { role: "送出し側", text: "パスポート取得等の少額の初期費用を現地で支援", project: "RefugePoint等", country: "ケニア", flag: "🇰🇪", source: "TBB Global Evaluation 2020 Final", url: "https://www.talentbeyondboundaries.org/s/TBB-Global-Evaluation-2020-Final-External.pdf" }
+        ]
+      },
+      {
+        id: 2, shortTitle: "受入先開拓", title: "受入れ先の開拓",
+        point: "受入主体となる企業や学校にアプローチし、受入れにあたり生じるコストや求められる支援、期待される効果について十分な説明を行う",
+        keywords:["企業や学校にアプローチ", "生じるコストや求められる支援", "期待される効果について十分な説明"],
+        checklist:[
+          "受入機関に対して、受入れにかかるコストと求める支援の責任範囲を事前に明確に提示しているか？",
+          "自治体、商工会議所、大学コンソーシアムなど、多様なアクターを巻き込んで受入枠を開拓しているか？"
+        ],
+        stakeholders: { hub: ["中間組織"], host:["就業支援事業者", "受入機関"], origin: [] },
+        actions:[
+          { role: "ハブ・受入側", text: "企業に人材の売り込み（ピッチ）を実施し、求人枠を獲得", project: "Displaced Talent Mobility Pilot", country: "イギリス", flag: "🇬🇧", source: "Zanzuchi - Building Refugee-Inclusive Labour Mobility...", url: "https://www.migrationpolicy.org/research/refugee-inclusive-labour-mobility-visa-evaluation" },
+          { role: "ハブ・受入側", text: "業界団体等を巻き込み、複数の雇用主に一括アプローチ", project: "EMPP", country: "カナダ", flag: "🇨🇦", source: "Dorst - Engaging Employers in Growing Refugee Labor...", url: "https://www.migrationpolicy.org/research/engaging-employers-refugee-labor-pathways" },
+          { role: "受入側", text: "大学のコンソーシアムや国際化部門が受入枠の開拓を推進", project: "UNICORE", country: "イタリア", flag: "🇮🇹", source: "Sabchev et al. - Financing Complementary Education...", url: "https://refugeehub.ca/" }
+        ]
+      },
+      {
+        id: 3, shortTitle: "候補者募集", title: "候補者の募集・選抜",
+        point: "受入側の具体的なニーズに基づき、現地パートナーと連携して候補者を募集し、公正なスキル評価や事前の期待値調整を行う",
+        keywords:["具体的なニーズに基づき", "公正なスキル評価", "事前の期待値調整"],
+        checklist:[
+          "信頼のある現地NGOや難民主導組織と連携し、候補者を発掘する関係性を構築しているか？",
+          "正確な情報を周知し、候補者に誤った期待を持たせないための事前調整（期待値調整）を行っているか？"
+        ],
+        stakeholders: { hub: ["中間組織"], host:["受入機関"], origin: ["現地パートナー"] },
+        actions:[
+          { role: "ハブ", text: "人材DBを活用し、ニーズとスキルをマッチング", project: "TBB", country: "カナダ・豪州", flag: "🇦🇺", source: "Higgins et al. - 2023 - Refugees as Skilled Migrants", url: "https://doi.org/10.1007/s11205-023-03130-9" },
+          { role: "送出し側", text: "現地NGO等がスクリーニングや履歴書作成を支援し、コミュニティへ情報周知と期待値調整を行う", project: "RefugePoint等", country: "ケニア", flag: "🇰🇪", source: "TBB Global Evaluation 2020 Final", url: "https://www.talentbeyondboundaries.org/s/TBB-Global-Evaluation-2020-Final-External.pdf" },
+          { role: "受入側", text: "企業や学校が書類選考やオンライン面接で採用・入学を決定", project: "EMPP", country: "カナダ", flag: "🇨🇦", source: "Dorst - Engaging Employers in Growing Refugee Labor...", url: "https://www.migrationpolicy.org/research/engaging-employers-refugee-labor-pathways" }
+        ]
+      },
+      {
+        id: 4, shortTitle: "入国前教育", title: "入国前教育の実施",
+        point: "語学・職業教育やオリエンテーションを提供し、スキル面での準備を行う",
+        keywords:["語学・職業教育やオリエンテーション", "スキル面での準備"],
+        checklist:[
+          "受入国で求められる言語要件や実務スキルに直結した事前研修を提供しているか？",
+          "受入国での生活インフラや職場文化に関する、実務的なオリエンテーションが含まれているか？"
+        ],
+        stakeholders: { hub: [], host: [], origin: ["現地パートナー"] },
+        actions:[
+          { role: "送出し側", text: "渡航前の第一庇護国で、現地の機関が語学・文化オリエンテーションや実務的な職業訓練を直接提供", project: "IOM等 / Triple Win等", country: "世界各地", flag: "🌍", source: "Fratzke - Refugee Resettlement and Complementary...", url: "https://www.migrationpolicy.org/research/refugee-resettlement-complementary-pathways" }
+        ]
+      },
+      {
+        id: 5, shortTitle: "受入手続き", title: "入国に向けた手続き",
+        point: "安全かつスムーズに滞在国から出国できるよう、関係機関との調整やビザ取得のサポートを行う",
+        keywords:["安全かつスムーズに滞在国から出国", "関係機関との調整", "ビザ取得のサポート"],
+        checklist:[
+          "第一庇護国から合法的に出国するための調整を現地政府・国際機関等と交渉・合意できているか？",
+          "パスポート等の代替文書の許容やビザ要件の緩和について、受入国政府と交渉・合意できているか？"
+        ],
+        stakeholders: { hub: ["中間組織"], host:["受入国政府"], origin: ["国連・政府機関"] },
+        actions:[
+          { role: "ハブ", text: "代替書類の交渉やビザ申請の進行を実務的に管理", project: "Healthcare Pilot", country: "イギリス", flag: "🇬🇧", source: "Zanzuchi - Building Refugee-Inclusive Labour Mobility...", url: "https://www.migrationpolicy.org/research/refugee-inclusive-labour-mobility-visa-evaluation" },
+          { role: "送出し側", text: "出発国政府等が合法的な出国許可や代替渡航文書を柔軟に発行", project: "ETM", country: "ニジェール", flag: "🇳🇪", source: "Carrera Nunez et al. - 2025 - Global Asylum...", url: "https://link.springer.com/book/10.1007/978-3-031-72272-9" },
+          { role: "受入側", text: "ビザ要件を緩和し、迅速かつ優先的に審査・発給", project: "EMPP", country: "カナダ", flag: "🇨🇦", source: "Dorst - Engaging Employers in Growing Refugee Labor...", url: "https://www.migrationpolicy.org/research/engaging-employers-refugee-labor-pathways" }
+        ]
+      },
+      {
+        id: 6, shortTitle: "受入体制整備", title: "地域の受入れ体制の構築",
+        point: "支援団体や地域コミュニティのネットワークを形成し、難民が円滑に地域に統合できる環境を整備",
+        keywords:["地域コミュニティのネットワークを形成", "円滑に地域に統合できる環境"],
+        checklist:[
+          "当事者コミュニティや市民グループを含めた、社会全体（Whole-of-Society）での受入体制を構築できているか？",
+          "受入機関と地域の支援団体等の間で、役割分担が明確になっているか？"
+        ],
+        stakeholders: { hub: [], host:["伴走支援団体", "自治体"], origin: [] },
+        actions:[
+          { role: "受入側", text: "市民ボランティアや自治体が、空港出迎えや住居手配など生活の立ち上げを伴走", project: "Community Sponsorship", country: "イギリス", flag: "🇬🇧", source: "Fratzke - Refugee Resettlement and Complementary...", url: "https://www.migrationpolicy.org/research/refugee-resettlement-complementary-pathways" },
+          { role: "受入側", text: "大学内の学生グループがスポンサーとなり生活を支援", project: "WUSC", country: "カナダ", flag: "🇨🇦", source: "Mude と Baker - Possibilities of Educational Pathways", url: "https://livedplacespublishing.com/" }
+        ]
+      },
+      {
+        id: 7, shortTitle: "定住支援", title: "定住支援",
+        point: "難民特有の事情を考慮し、トラウマに配慮したケアや、在留資格等に関する法的支援・定住支援を行う",
+        keywords:["難民特有の事情を考慮", "トラウマに配慮したケア", "法的支援・定住支援"],
+        checklist:[
+          "在留資格やメンタルケアに関して、専門家による相談体制が構築されているか？",
+          "入国直後から住居の確保や生活環境の整備をサポートする体制が構築されているか？"
+        ],
+        stakeholders: { hub: [], host:["伴走支援団体", "自治体"], origin: [] },
+        actions:[
+          { role: "受入側", text: "地域のNGOや支援団体が、語学学習やトラウマケア、職場・学校への統合支援を継続的に実施", project: "Pathways Japan等", country: "日本", flag: "🇯🇵", source: "Husseini - 2025 - International Education as...", url: "https://doi.org/10.1080/15562948.2025.2573941" },
+          { role: "受入側", text: "企業が定住支援機関に費用を支払い、専門的な伴走支援を委託", project: "Skilled Refugee Labour", country: "豪州", flag: "🇦🇺", source: "Higgins et al. - 2023 - Refugees as Skilled Migrants", url: "https://doi.org/10.1007/s11205-023-03130-9" }
+        ]
+      },
+      {
+        id: 8, shortTitle: "進路支援", title: "進路支援",
+        point: "定住・永住を見据えた長期的なキャリアパスが構築できるよう、就労支援・進学支援を行う",
+        keywords:["定住・永住を見据えた", "長期的なキャリアパスが構築", "就労支援・進学支援"],
+        checklist:[
+          "長期的なキャリア形成に向けた語学・職業能力の向上のための仕組みがあるか？",
+          "就職活動を伴走支援する体制が構築されているか？"
+        ],
+        stakeholders: { hub: [], host: ["受入機関", "就業支援事業者"], origin:[] },
+        actions:[
+          { role: "受入側", text: "企業や大学、就業支援事業者が、本人の免許取得や卒業後のキャリア形成を長期的に支援", project: "Leadership for Syria等", country: "ドイツ", flag: "🇩🇪", source: "Sabchev et al. - Financing Complementary Education...", url: "https://refugeehub.ca/" },
+          { role: "受入側", text: "就労や進学を通じて、定住・永住へのルートに乗るためのサポートを行う", project: "EMPP等", country: "カナダ", flag: "🇨🇦", source: "Vankova - 2024 - Refugee Labour Mobility to the EU", url: "https://doi.org/10.1093/rsq/hdad023" }
+        ]
+      }
+    ];
 
-      {/* 1. ナビゲーション */}
-      <div className="flex-none bg-white border-b border-gray-300 z-10 p-1.5 md:p-2 shadow-sm">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-4 gap-1 md:gap-1.5">
-            {flowData.map((step) => {
-              const isActive = activeStepId === step.id;
-              return (
-                <button
-                  key={step.id}
-                  onClick={() => setActiveStepId(step.id)}
-                  className={`
-                    relative flex items-center justify-center text-center px-0.5 py-1.5 md:py-2 border transition-colors rounded-sm
-                    ${isActive 
-                      ? 'bg-[#00428B] text-white border-[#00428B] shadow-inner' 
-                      : 'bg-[#F9FAFC] text-gray-600 border-gray-300 hover:bg-[#EAF0F6] hover:text-[#00428B]'
-                    }
-                  `}
-                >
-                  <span className="text-[9px] sm:text-[11px] md:text-sm font-bold leading-tight whitespace-normal break-words">
-                    {step.id}. {step.shortTitle}
-                  </span>
-                </button>
-              );
-            })}
+    const highlightText = (text, keywords) => {
+      let elements =[];
+      let currentText = text;
+
+      keywords.forEach((keyword, idx) => {
+        if (!currentText.includes(keyword)) return;
+        const parts = currentText.split(keyword);
+        if (parts.length > 1) {
+          elements.push(parts[0]);
+          elements.push(
+            <strong key={idx} className="text-[#00428B] font-bold">
+              {keyword}
+            </strong>
+          );
+          currentText = parts.slice(1).join(keyword);
+        }
+      });
+      elements.push(currentText);
+      return elements.length > 0 ? elements : text;
+    };
+
+    function Dashboard() {
+      const [activeStepId, setActiveStepId] = useState(1);
+      const activeStep = flowData.find(s => s.id === activeStepId);
+
+      const getStakeholderIcon = (name) => {
+        const iconClass = "w-3.5 h-3.5 md:w-4 md:h-4 flex-shrink-0 text-[#00428B]";
+        if (name.includes('資金提供')) return <Coins className={iconClass} />;
+        if (name.includes('中間組織')) return <Network className={iconClass} />;
+        if (name.includes('受入機関') || name.includes('学校')) return <Building className={iconClass} />;
+        if (name.includes('現地パートナー')) return <Globe className={iconClass} />;
+        if (name.includes('就業支援')) return <Briefcase className={iconClass} />;
+        if (name.includes('政府') || name.includes('国連')) return <Landmark className={iconClass} />;
+        if (name.includes('伴走') || name.includes('自治体') || name.includes('団体')) return <HeartHandshake className={iconClass} />;
+        return <Info className={iconClass} />;
+      };
+
+      return (
+        <div className="h-[100dvh] w-full bg-[#F4F6F9] flex flex-col font-sans text-[#333333] overflow-hidden select-none">
+          
+          <div className="bg-[#002855] text-white px-3 py-1.5 md:px-4 md:py-2 flex-none shadow-sm z-20 flex justify-between items-center">
+            <div className="text-[10px] md:text-sm font-bold tracking-widest opacity-95">
+              Complementary Pathways実践フロー
+            </div>
           </div>
-        </div>
-      </div>
 
-      {/* 2. メインコンテンツ */}
-      <div className="flex-1 flex flex-col min-h-0 w-full max-w-5xl mx-auto p-2 sm:p-3 md:p-5 gap-3 md:gap-4">
-        
-        {/* タイトル */}
-        <div className="flex-none flex items-center bg-white border border-gray-200 shadow-sm p-2.5 md:p-3 rounded-sm border-l-4 border-l-[#00428B] animate-in fade-in duration-200">
-          <h1 className="text-sm md:text-lg font-bold text-gray-900 tracking-tight">
-            {activeStep.id}. {activeStep.title}
-          </h1>
-        </div>
-
-        {/* レバレッジポイント ＆ チェックリスト */}
-        <div className="flex-none relative bg-[#EAF2F8] border border-[#B3D4E5] rounded-sm p-3 md:p-4 shadow-sm animate-in fade-in slide-in-from-left-2 duration-300">
-          <div className="flex flex-col gap-2.5">
-            <div className="flex items-start gap-2">
-              <Target className="w-4 h-4 md:w-5 md:h-5 text-[#005B9F] flex-shrink-0 mt-0.5" />
-              <div>
-                <div className="text-[10px] md:text-xs font-black text-[#005B9F] mb-1 tracking-widest">
-                  レバレッジポイント
-                </div>
-                <p className="text-[11px] md:text-sm text-gray-800 leading-relaxed font-medium">
-                  {highlightText(activeStep.point, activeStep.keywords)}
-                </p>
+          <div className="flex-none bg-white border-b border-gray-300 z-10 p-1.5 md:p-2 shadow-sm">
+            <div className="max-w-5xl mx-auto">
+              <div className="grid grid-cols-4 gap-1 md:gap-1.5">
+                {flowData.map((step) => {
+                  const isActive = activeStepId === step.id;
+                  return (
+                    <button
+                      key={step.id}
+                      onClick={() => setActiveStepId(step.id)}
+                      className={`
+                        relative flex items-center justify-center text-center px-0.5 py-1.5 md:py-2 border transition-colors rounded-sm
+                        ${isActive 
+                          ? 'bg-[#00428B] text-white border-[#00428B] shadow-inner' 
+                          : 'bg-[#F9FAFC] text-gray-600 border-gray-300 hover:bg-[#EAF0F6] hover:text-[#00428B]'
+                        }
+                      `}
+                    >
+                      <span className="text-[9px] sm:text-[11px] md:text-sm font-bold leading-tight whitespace-normal break-words">
+                        {step.id}. {step.shortTitle}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
-            
-            <div className="bg-white border border-[#B3D4E5] rounded-sm p-2.5 md:p-3 mt-1">
-              <ul className="space-y-1.5 md:space-y-2">
-                {activeStep.checklist.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-1.5 md:gap-2">
-                    <CheckSquare className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#00428B] flex-shrink-0 mt-0.5" />
-                    <span className="text-[10px] md:text-sm text-gray-800 font-bold leading-snug">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* 下段：ステークホルダーと参考事例 (2カラム) */}
-        <div key={activeStep.id} className="flex flex-col md:flex-row gap-3 md:gap-4 flex-1 min-h-0 animate-in fade-in duration-300">
-          
-          {/* 左：主要なステークホルダー */}
-          <div className="w-full md:w-5/12 flex flex-col bg-white border border-gray-300 rounded-sm shadow-sm">
-            <div className="bg-[#EAF0F6] text-[#00428B] text-[10px] md:text-xs font-bold px-3 py-1.5 flex-none border-b border-gray-300">
-              主要なステークホルダー
-            </div>
-            
-            <div className="flex flex-1 min-h-0 divide-x divide-gray-200">
-              {ROLES.map(role => {
-                const names = activeStep.stakeholders[role === 'ハブ' ? 'hub' : role === '受入側' ? 'host' : 'origin'];
-                return (
-                  <div key={role} className="flex-1 flex flex-col">
-                    <div className="text-center text-[9px] md:text-[11px] font-bold text-gray-600 py-1 border-b border-gray-200 bg-[#F9FAFC]">
-                      {role}
-                    </div>
-                    <div className="p-1.5 md:p-2 flex-1 overflow-y-auto no-scrollbar">
-                      {names.length > 0 ? (
-                        <ul className="flex flex-col gap-1.5">
-                          {names.map(name => (
-                            <li key={name} className="flex items-center gap-1 text-[9.5px] md:text-[13px] font-bold text-gray-800 leading-tight">
-                              {getStakeholderIcon(name)}
-                              <span>{name}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <div className="text-gray-300 text-center text-[10px] py-1">-</div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
           </div>
 
-          {/* 右：参考事例（スクロール可能領域） */}
-          <div className="w-full md:w-7/12 flex flex-col bg-white border border-gray-300 rounded-sm shadow-sm min-h-0">
-            <div className="bg-[#EAF0F6] text-[#00428B] text-[10px] md:text-xs font-bold px-3 py-1.5 flex-none border-b border-gray-300">
-              参考事例
-            </div>
+          <div className="flex-1 flex flex-col min-h-0 w-full max-w-5xl mx-auto p-2 sm:p-3 md:p-5 gap-3 md:gap-4">
             
-            <div className="flex-1 overflow-y-auto no-scrollbar p-1.5 md:p-2 flex flex-col gap-1.5 md:gap-2 bg-[#F9FAFC]">
-              {activeStep.actions.map((action, idx) => (
-                <a 
-                  key={idx}
-                  href={action.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex flex-col justify-between border border-gray-200 hover:border-[#00428B] bg-white hover:bg-[#F0F4F8] p-2 md:p-2.5 rounded-sm transition-colors cursor-pointer shadow-sm"
-                >
-                  <div className="mb-1.5 md:mb-2">
-                    <div className="flex items-center flex-wrap gap-1.5 mb-1.5">
-                      <span className="bg-[#555555] text-white px-1 py-0.5 text-[8.5px] md:text-[10px] font-bold rounded-sm">
-                        {action.role}
-                      </span>
-                      <span className="text-[9.5px] md:text-[11px] font-bold text-[#00428B] flex items-center gap-1">
-                        <span>{action.flag}</span>
-                        {action.country} | {action.project}
-                      </span>
+            <div className="flex-none flex items-center bg-white border border-gray-200 shadow-sm p-2.5 md:p-3 rounded-sm border-l-4 border-l-[#00428B] animate-in fade-in duration-200">
+              <h1 className="text-sm md:text-lg font-bold text-gray-900 tracking-tight">
+                {activeStep.id}. {activeStep.title}
+              </h1>
+            </div>
+
+            <div className="flex-none relative bg-[#EAF2F8] border border-[#B3D4E5] rounded-sm p-3 md:p-4 shadow-sm animate-in fade-in slide-in-from-left-2 duration-300">
+              <div className="flex flex-col gap-2.5">
+                <div className="flex items-start gap-2">
+                  <Target className="w-4 h-4 md:w-5 md:h-5 text-[#005B9F] flex-shrink-0 mt-0.5" />
+                  <div>
+                    <div className="text-[10px] md:text-xs font-black text-[#005B9F] mb-1 tracking-widest">
+                      レバレッジポイント
                     </div>
-                    <p className="text-[10.5px] md:text-sm text-gray-900 font-medium leading-snug">
-                      {action.text}
+                    <p className="text-[11px] md:text-sm text-gray-800 leading-relaxed font-medium">
+                      {highlightText(activeStep.point, activeStep.keywords)}
                     </p>
                   </div>
-                  
-                  <div className="flex items-center justify-between mt-0.5 pt-1.5 md:pt-2 border-t border-gray-100">
-                    <div className="flex items-center gap-1 text-gray-500 overflow-hidden">
-                      <FileText className="w-3 h-3 md:w-3.5 md:h-3.5 flex-shrink-0 text-gray-400 group-hover:text-[#00428B]" />
-                      <span className="text-[8.5px] md:text-[10px] truncate group-hover:text-[#00428B] font-medium transition-colors">
-                        資料: {action.source}
-                      </span>
+                </div>
+                
+                <div className="bg-white border border-[#B3D4E5] rounded-sm p-2.5 md:p-3 mt-1">
+                  <ul className="space-y-1.5 md:space-y-2">
+                    {activeStep.checklist.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-1.5 md:gap-2">
+                        <CheckSquare className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#005B9F] flex-shrink-0 mt-0.5" />
+                        <span className="text-[10.5px] md:text-xs text-gray-700 leading-tight md:leading-snug">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex-none bg-white border border-gray-200 rounded-sm p-2.5 md:p-3 shadow-sm flex flex-col gap-2">
+              <div className="text-[10px] md:text-xs font-bold text-gray-500 tracking-wider">主要ステークホルダー</div>
+              <div className="flex flex-wrap gap-3 md:gap-5">
+                {['hub', 'host', 'origin'].map(roleKey => {
+                  if (!activeStep.stakeholders[roleKey] || activeStep.stakeholders[roleKey].length === 0) return null;
+                  const roleLabel = roleKey === 'hub' ? 'ハブ' : roleKey === 'host' ? '受入側' : '送出し側';
+                  return (
+                    <div key={roleKey} className="flex items-start gap-1.5 md:gap-2">
+                      <div className="text-[9.5px] md:text-[11px] font-bold text-gray-400 mt-0.5 w-10 md:w-12">{roleLabel}:</div>
+                      <div className="flex flex-wrap gap-1 md:gap-1.5">
+                        {activeStep.stakeholders[roleKey].map((sh, idx) => (
+                          <div key={idx} className="flex items-center gap-1 bg-gray-50 border border-gray-200 px-1.5 py-0.5 rounded-sm shadow-sm">
+                            {getStakeholderIcon(sh)}
+                            <span className="text-[9.5px] md:text-[11px] text-gray-700 font-medium">{sh}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <ExternalLink className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-300 group-hover:text-[#00428B] flex-shrink-0" />
-                  </div>
-                </a>
-              ))}
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="flex-1 min-h-0 flex flex-col gap-2 bg-white border border-gray-200 rounded-sm p-2.5 md:p-4 shadow-sm">
+              <div className="flex-none text-[10px] md:text-xs font-bold text-gray-500 tracking-wider">実践アクション事例</div>
+              
+              <div className="flex-1 overflow-y-auto min-h-0 pr-1 space-y-2 md:space-y-3 scrollbar-thin">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
+                  {activeStep.actions.map((action, idx) => (
+                    <a
+                      key={idx}
+                      href={action.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group block bg-[#F9FAFC] border border-gray-200 hover:border-[#00428B] hover:shadow-md rounded-sm p-2 md:p-3 transition-all duration-200"
+                    >
+                      <div className="flex flex-col mb-1.5">
+                        <div className="flex items-center flex-wrap gap-1.5 mb-1.5">
+                          <span className="bg-[#555555] text-white px-1 py-0.5 text-[8.5px] md:text-[10px] font-bold rounded-sm">
+                            {action.role}
+                          </span>
+                          <span className="text-[9.5px] md:text-[11px] font-bold text-[#00428B] flex items-center gap-1">
+                            <span>{action.flag}</span>
+                            {action.country} | {action.project}
+                          </span>
+                        </div>
+                        <p className="text-[10.5px] md:text-sm text-gray-900 font-medium leading-snug">
+                          {action.text}
+                        </p>
+                      </div>
+                      
+                      <div className="flex items-center justify-between mt-0.5 pt-1.5 md:pt-2 border-t border-gray-100">
+                        <div className="flex items-center gap-1 text-gray-500 overflow-hidden">
+                          <FileText className="w-3 h-3 md:w-3.5 md:h-3.5 flex-shrink-0 text-gray-400 group-hover:text-[#00428B]" />
+                          <span className="text-[8.5px] md:text-[10px] truncate group-hover:text-[#00428B] font-medium transition-colors">
+                            資料: {action.source}
+                          </span>
+                        </div>
+                        <ExternalLink className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-300 group-hover:text-[#00428B] flex-shrink-0" />
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+
             </div>
           </div>
-
         </div>
-      </div>
-    </div>
-  );
-}
+      );
+    }
 
-
-```
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<Dashboard />);
+  </script>
+</body>
+</html>
