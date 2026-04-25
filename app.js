@@ -10,9 +10,9 @@ const flowData = [
     ],
     stakeholders: { hub: ["資金提供者", "中間組織"], host: ["受入機関"], origin: ["現地パートナー"] },
     actions: [
-      { role: "ハブ", text: "財団等から初期運営費や渡航費ローンを調達", project: "各種", country: "グローバル", source: "Davitti & Vankova (2025) - From Funding to Financing", url: "https://doi.org/10.1080/15562948.2024.2385980" },
+      { role: "ハブ", text: "財団等から初期運営費や渡航費ローンを調達", project: "各種", country: "グローバル", source: "Fratzke - Refugee Resettlement and Complementary Pathways", url: "https://www.migrationpolicy.org/research/refugee-resettlement-complementary-pathways" },
       { role: "ハブ", text: "就労成功時に投資家にリターンを支払う成果報酬型モデル（SIB）を活用", project: "KOTO SIB", country: "フィンランド", source: "Davitti & Vankova (2025) - From Funding to Financing", url: "https://doi.org/10.1080/15562948.2024.2385980" },
-      { role: "受入側", text: "大学の授業料免除や学生の少額課徴金等で費用をカバー", project: "WUSC", country: "カナダ", source: "Sabchev et al. - Financing Complementary Education Pathways", url: "https://www.eupassworld.eu/wp-content/uploads/2023/11/EU-Passworld-Financing-Complementary-Education-Pathways.pdf" },
+      { role: "受入側", text: "大学の授業料免除や学生の少額課徴金等で費用をカバー", project: "WUSC", country: "カナダ", source: "Fratzke - Refugee Resettlement and Complementary Pathways", url: "https://www.migrationpolicy.org/research/refugee-resettlement-complementary-pathways" },
       { role: "送出し側", text: "パスポート取得等の少額の初期費用を現地で支援", project: "RefugePoint等", country: "ケニア", source: "TBB+Global+Evaluation+2020+Final+(External).pdf", url: "https://www.talentbeyondboundaries.org/s/TBB-Global-Evaluation-2020-Final-External.pdf" }
     ]
   },
@@ -26,9 +26,8 @@ const flowData = [
     ],
     stakeholders: { hub: ["中間組織"], host: ["就業支援事業者", "受入機関"], origin: [] },
     actions: [
-      { role: "ハブ・受入側", text: "企業に人材の売り込み（ピッチ）を実施し、求人枠を獲得", project: "Displaced Talent Mobility Pilot", country: "イギリス", source: "Zanzuchi - Building Refugee-Inclusive Labour Mobility Pathways", url: "https://www.migrationpolicy.org/research/refugee-labor-mobility" },
-      { role: "ハブ・受入側", text: "業界団体等を巻き込み、複数の雇用主に一括アプローチ", project: "EMPP", country: "カナダ", source: "Dorst - Engaging Employers in Growing Refugee Labor Pathways", url: "https://www.migrationpolicy.org/research/engaging-employers-growing-refugee-labor-pathways" },
-      { role: "受入側", text: "大学のコンソーシアムや国際化部門が受入枠の開拓を推進", project: "UNICORE", country: "イタリア", source: "Sabchev et al. - Financing Complementary Education Pathways", url: "https://www.eupassworld.eu/wp-content/uploads/2023/11/EU-Passworld-Financing-Complementary-Education-Pathways.pdf" }
+      { role: "ハブ・受入側", text: "企業に人材の売り込み（ピッチ）を実施し、求人枠を獲得", project: "Displaced Talent Mobility Pilot", country: "イギリス", source: "Dorst - Engaging Employers in Growing Refugee Labor Pathways", url: "https://www.migrationpolicy.org/research/employers-refugee-labor-pathways" },
+      { role: "ハブ・受入側", text: "業界団体等を巻き込み、複数の雇用主に一括アプローチ", project: "Healthcare Pilot (NHS)", country: "イギリス", source: "Dorst - Engaging Employers in Growing Refugee Labor Pathways", url: "https://www.migrationpolicy.org/research/employers-refugee-labor-pathways" }
     ]
   },
   {
@@ -43,7 +42,7 @@ const flowData = [
     actions: [
       { role: "ハブ", text: "人材DBを活用し、ニーズとスキルをマッチング", project: "TBB", country: "カナダ・豪州", source: "Higgins et al. (2023) - Refugees as Skilled Migrants", url: "https://doi.org/10.1007/s11205-023-03130-9" },
       { role: "送出し側", text: "現地NGO等がスクリーニングや履歴書作成を支援し、コミュニティへ情報周知と期待値調整を行う", project: "RefugePoint等", country: "ケニア", source: "TBB+Global+Evaluation+2020+Final+(External).pdf", url: "https://www.talentbeyondboundaries.org/s/TBB-Global-Evaluation-2020-Final-External.pdf" },
-      { role: "受入側", text: "企業や学校が書類選考やオンライン面接で採用・入学を決定", project: "EMPP", country: "カナダ", source: "Dorst - Engaging Employers in Growing Refugee Labor Pathways", url: "https://www.migrationpolicy.org/research/engaging-employers-growing-refugee-labor-pathways" }
+      { role: "受入側", text: "企業や学校が書類選考やオンライン面接で採用・入学を決定", project: "EMPP", country: "カナダ", source: "Dorst - Engaging Employers in Growing Refugee Labor Pathways", url: "https://www.migrationpolicy.org/research/employers-refugee-labor-pathways" }
     ]
   },
   {
@@ -56,11 +55,11 @@ const flowData = [
     ],
     stakeholders: { hub: [], host: [], origin: ["現地パートナー"] },
     actions: [
-      { role: "送出し側", text: "渡航前の第一庇護国で、現地の機関が語学・文化オリエンテーションや実務的な職業訓練を直接提供", project: "IOM等 / Triple Win等", country: "世界各地", source: "Fratzke - Refugee Resettlement and Complementary Pathways", url: "https://www.migrationpolicy.org/research/refugee-resettlement-complementary-pathways-opportunities-growth" }
+      { role: "送出し側", text: "渡航前の第一庇護国で、現地の機関が語学・文化オリエンテーションや実務的な職業訓練を直接提供", project: "IOM等 / Triple Win等", country: "世界各地", source: "Fratzke - Refugee Resettlement and Complementary Pathways", url: "https://www.migrationpolicy.org/research/refugee-resettlement-complementary-pathways" }
     ]
   },
   {
-    id: 5, shortTitle: "受入手続き", title: "入国に向けた手続き",
+    id: 5, shortTitle: "入国手続き", title: "入国に向けた手続き",
     point: "安全かつスムーズに滞在国から出国できるよう、関係機関との調整やビザ取得のサポートを行う",
     keywords: ["安全かつスムーズに滞在国から出国", "関係機関との調整", "ビザ取得のサポート"],
     checklist: [
@@ -69,9 +68,8 @@ const flowData = [
     ],
     stakeholders: { hub: ["中間組織"], host: ["受入国政府"], origin: ["国連・政府機関"] },
     actions: [
-      { role: "ハブ", text: "代替書類の交渉やビザ申請の進行を実務的に管理", project: "Healthcare Pilot", country: "イギリス", source: "Zanzuchi - Building Refugee-Inclusive Labour Mobility Pathways", url: "https://www.migrationpolicy.org/research/refugee-labor-mobility" },
-      { role: "送出し側", text: "出発国政府等が合法的な出国許可や代替渡航文書を柔軟に発行", project: "ETM", country: "ニジェール", source: "Carrera Nunez et al. (2025) - Global Asylum Governance", url: "https://link.springer.com/book/10.1007/978-3-031-74866-0" },
-      { role: "受入側", text: "ビザ要件を緩和し、迅速かつ優先的に審査・発給", project: "EMPP", country: "カナダ", source: "Dorst - Engaging Employers in Growing Refugee Labor Pathways", url: "https://www.migrationpolicy.org/research/engaging-employers-growing-refugee-labor-pathways" }
+      { role: "ハブ", text: "代替書類の交渉やビザ申請の進行を実務的に管理", project: "Displaced Talent Mobility Pilot", country: "イギリス", source: "Zanzuchi - Building Refugee-Inclusive Labour Mobility Pathways", url: "https://www.migrationpolicy.org/research/refugee-labor-mobility" },
+      { role: "受入側", text: "ビザ要件を緩和し、迅速かつ優先的に審査・発給", project: "EMPP", country: "カナダ", source: "Dorst - Engaging Employers in Growing Refugee Labor Pathways", url: "https://www.migrationpolicy.org/research/employers-refugee-labor-pathways" }
     ]
   },
   {
@@ -84,8 +82,8 @@ const flowData = [
     ],
     stakeholders: { hub: [], host: ["伴走支援団体", "自治体"], origin: [] },
     actions: [
-      { role: "受入側", text: "市民ボランティアや自治体が、空港出迎えや住居手配など生活の立ち上げを伴走", project: "Community Sponsorship", country: "イギリス", source: "Fratzke - Refugee Resettlement and Complementary Pathways", url: "https://www.migrationpolicy.org/research/refugee-resettlement-complementary-pathways-opportunities-growth" },
-      { role: "受入側", text: "大学内の学生グループがスポンサーとなり生活を支援", project: "WUSC", country: "カナダ", source: "Mude & Baker - Possibilities of Educational Pathways", url: "https://livedplacespublishing.com/book/possibilities-of-educational-pathways-to-refugee-resettlement" }
+      { role: "受入側", text: "地域のボランティアネットワークが、新しく到着した医療従事者（難民）を地域社会に受け入れ、定住に向けた生活の立ち上げを支援", project: "Healthcare Pilot", country: "イギリス", source: "Dorst - Engaging Employers in Growing Refugee Labor Pathways", url: "https://www.migrationpolicy.org/research/employers-refugee-labor-pathways" },
+      { role: "受入側", text: "大学内の学生グループがスポンサーとなり生活を支援", project: "WUSC", country: "カナダ", source: "Mude & Baker - Possibilities of Educational Pathways", url: "https://www.vitalsource.com/products/possibilities-of-educational-pathways-to-refugee-william-mude-sally-baker-v9781916985292" }
     ]
   },
   {
@@ -99,7 +97,7 @@ const flowData = [
     stakeholders: { hub: [], host: ["伴走支援団体", "自治体"], origin: [] },
     actions: [
       { role: "受入側", text: "地域のNGOや支援団体が、語学学習やトラウマケア、職場・学校への統合支援を継続的に実施", project: "Pathways Japan等", country: "日本", source: "Husseini (2025) - International Education as Complementary Pathways", url: "https://doi.org/10.1080/15562948.2025.2573941" },
-      { role: "受入側", text: "企業が定住支援機関に費用を支払い、専門的な伴走支援を委託", project: "Skilled Refugee Labour", country: "豪州", source: "Higgins et al. (2023) - Refugees as Skilled Migrants", url: "https://doi.org/10.1007/s11205-023-03130-9" }
+      { role: "受入側", text: "企業が定住支援機関に費用を支払い、専門的な伴走支援を委託", project: "Skilled Refugee Labour", country: "豪州", source: "Dorst - Engaging Employers in Growing Refugee Labor Pathways", url: "https://www.migrationpolicy.org/research/employers-refugee-labor-pathways" }
     ]
   },
   {
@@ -112,8 +110,8 @@ const flowData = [
     ],
     stakeholders: { hub: [], host: ["受入機関", "就業支援事業者"], origin: [] },
     actions: [
-      { role: "受入側", text: "企業や大学、就業支援事業者が、本人の免許取得や卒業後のキャリア形成を長期的に支援", project: "Leadership for Syria等", country: "ドイツ", source: "Sabchev et al. - Financing Complementary Education Pathways", url: "https://www.eupassworld.eu/wp-content/uploads/2023/11/EU-Passworld-Financing-Complementary-Education-Pathways.pdf" },
-      { role: "受入側", text: "就労や進学を通じて、定住・永住へのルートに乗るためのサポートを行う", project: "EMPP等", country: "カナダ", source: "Heather - The Economic Mobility Pathways Project", url: "https://www.unhcr.org/ca/wp-content/uploads/sites/114/2019/08/EMPP-Report.pdf" }
+      { role: "受入側", text: "企業や大学、就業支援事業者が、本人の免許取得や卒業後のキャリア形成を長期的に支援", project: "Leadership for Syria等", country: "ドイツ", source: "Fratzke - Refugee Resettlement and Complementary Pathways", url: "https://www.migrationpolicy.org/research/refugee-resettlement-complementary-pathways" },
+      { role: "受入側", text: "就労や進学を通じて、定住・永住へのルートに乗るためのサポートを行う", project: "EMPP等", country: "カナダ", source: "Heather - The Economic Mobility Pathways Project", url: "https://www.unhcr.ca/wp-content/uploads/2019/07/The-Economic-Mobility-Pathways-Project-Policy-Principles-and-Lessons-Learned-June-2019.pdf" }
     ]
   }
 ];
@@ -179,6 +177,10 @@ function renderContent() {
   `).join('');
 
   const stakeholdersHtml = `
+    <div style="margin-top: 16px; margin-bottom: 8px; font-weight: bold; font-size: 0.95rem; color: #1e293b; display: flex; align-items: center; gap: 6px;">
+      <i data-lucide="users" style="width: 18px; height: 18px; color: #3b82f6;"></i>
+      主要なステークホルダー
+    </div>
     <div class="stakeholders-section">
       ${renderStakeholderCol('ハブ', 'network', 'col-hub', s.stakeholders.hub)}
       ${renderStakeholderCol('受入側', 'building', 'col-host', s.stakeholders.host)}
@@ -228,6 +230,10 @@ function renderContent() {
 
     ${stakeholdersHtml}
 
+    <div style="margin-top: 16px; margin-bottom: 8px; font-weight: bold; font-size: 0.95rem; color: #1e293b; display: flex; align-items: center; gap: 6px;">
+      <i data-lucide="activity" style="width: 18px; height: 18px; color: #10b981;"></i>
+      参考事例・アクション
+    </div>
     <div class="actions-grid">${actionsHtml}</div>
   `;
 }
