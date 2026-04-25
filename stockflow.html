@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complementary Pathways ストック＆フロー図</title>
+  <meta name="description" content="難民の移行プロセスを「蓄積（タンク）」と「流れ（パイプ・バルブ）」で捉え、8つの介入点がどこを開放するかを可視化">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      background: #F4F6F9;
+      color: #1e293b;
+      overflow: hidden;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    .sf-header {
+      background: #002855;
+      color: #fff;
+      padding: 6px 16px;
+      flex: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,.25);
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sf-header h1 { font-size: 13px; font-weight: 700; letter-spacing: .08em; }
+    .sf-header p { font-size: 9px; color: #93c5fd; margin-top: 2px; opacity: .9; }
+    .sf-header .back-link {
+      color: #93c5fd;
+      text-decoration: none;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border: 1px solid rgba(147,197,253,.4);
+      border-radius: 6px;
+      transition: background .2s, color .2s;
+    }
+    .sf-header .back-link:hover { background: rgba(255,255,255,.1); color: #fff; }
+
+    .sf-legend {
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 8px 12px;
+      flex: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+      z-index: 10;
+    }
+    .sf-legend-item { display: flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 11px; font-weight: 700; }
+    .sf-legend-item.legend-stock { color: #1e40af; }
+    .sf-legend-item.legend-flow { color: #475569; }
+    .sf-legend-item.legend-converter { color: #15803d; }
+    .sf-legend-item.legend-converter .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #dcfce7; border: 1px solid #22c55e; display: inline-block;
+      flex-shrink: 0;
+    }
+    .sf-legend-item.legend-leverage {
+      color: #854d0e;
+      background: #fefce8;
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid #fde68a;
+    }
+    .sf-legend-item [data-lucide] { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* ── Canvas Area ── */
+    .sf-canvas {
+      flex: 1;
+      overflow: hidden;
+      background: #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sf-diagram-wrapper {
+      /* JS sets transform scale */
+    }
+
+    .sf-diagram {
+      position: relative;
+      width: 1400px;
+      height: 780px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 20px rgba(0,0,0,.08);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .sf-diagram svg {
+      width: 100%; height: 100%;
+      position: absolute; top: 0; left: 0;
+    }
+
+    /* ── Overlay HTML elements ── */
+    .sf-overlay {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+    }
+
+    /* Valve labels */
+    .valve-label {
+      position: absolute;
+      background: #fff;
+      padding: 1px 6px;
+      border: 1px solid #d1d5db;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #374151;
+      box-shadow: 0 1px 2px rgba(0,0,0,.06);
+      white-space: nowrap;
+    }
+
+    /* Stock tanks */
+    .stock-tank {
+      position: absolute;
+      pointer-events: auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .stock-inner {
+      width: 100%; height: 100%;
+      border-radius: 0 0 10px 10px;
+      border-width: 3px;
+      border-style: solid;
+      border-top: none;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,.06);
+    }
+    .stock-inner::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%;
+      border-top: 2px dashed;
+    }
+    .stock-water {
+      width: 100%;
+      border-radius: 0 0 6px 6px;
+      opacity: .8;
+      transition: height .3s ease;
+    }
+    .stock-inner:hover .stock-water { height: 60% !important; }
+    .stock-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .stock-label [data-lucide] { margin-bottom: 2px; }
+    .stock-label .title { font-size: 11px; font-weight: 700; line-height: 1.3; }
+    .stock-label .subtitle { font-size: 8px; margin-top: 1px; }
+
+    /* Tank 1 - pipeline in progress */
+    .tank-1 .stock-inner { background: #eff6ff; border-color: #60a5fa; }
+    .tank-1 .stock-inner::before { border-color: #93bbfd; }
+    .tank-1 .stock-water { background: #93c5fd; height: 45%; }
+    .stock-inner:hover .stock-water { filter: brightness(1.05); }
+    .tank-1 .stock-label [data-lucide] { color: #1d4ed8; width: 16px; height: 16px; }
+    .tank-1 .stock-label .title { color: #1e3a5f; }
+    .tank-1 .stock-label .subtitle { color: #1d4ed8; }
+
+    /* Tank 2 - pipeline in progress */
+    .tank-2 .stock-inner { background: #dbeafe; border-color: #3b82f6; }
+    .tank-2 .stock-inner::before { border-color: #93bbfd; }
+    .tank-2 .stock-water { background: #60a5fa; height: 45%; }
+    .tank-2 .stock-label [data-lucide] { color: #1e3a8a; width: 16px; height: 16px; }
+    .tank-2 .stock-label .title { color: #1e3a5f; }
+    .tank-2 .stock-label .subtitle { color: #1e3a8a; }
+
+    /* Tank 3 (Goal) - accumulated success, should be fullest */
+    .tank-3 .stock-inner {
+      background: #f0fdf4;
+      border-color: #16a34a;
+      border-radius: 10px;
+      border-top: 3px solid #16a34a;
+      box-shadow: 0 4px 12px rgba(22,163,74,.15);
+    }
+    .tank-3 .stock-inner::before { display: none; }
+    .tank-3 .stock-water { background: #4ade80; height: 75%; border-radius: 0 0 7px 7px; opacity: .85; }
+    .tank-3 .stock-inner:hover .stock-water { height: 85% !important; }
+    .tank-3 .stock-label [data-lucide] { color: #166534; width: 20px; height: 20px; }
+    .tank-3 .stock-label .title { color: #14532d; font-size: 12px; font-weight: 800; }
+
+    /* Converter bubbles */
+    .converter {
+      position: absolute;
+      background: #f0fdf4;
+      border: 2px solid #22c55e;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #166534;
+      box-shadow: 0 1px 3px rgba(0,0,0,.05);
+      line-height: 1.2;
+    }
+
+    /* Leverage point cards */
+    .lev-card {
+      position: absolute;
+      pointer-events: auto;
+      width: 190px;
+    }
+    .lev-inner {
+      background: #FFFBEB;
+      border: 2px solid #FCD34D;
+      padding: 7px 8px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.07);
+      transition: transform .2s, box-shadow .2s;
+      cursor: default;
+    }
+    .lev-inner:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+    .lev-title {
+      font-weight: 700;
+      font-size: 10px;
+      color: #78350f;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      border-bottom: 1px solid #fde68a;
+      padding-bottom: 3px;
+    }
+    .lev-title [data-lucide] { width: 12px; height: 12px; color: #ca8a04; }
+    .lev-desc {
+      font-size: 9px;
+      color: #1f2937;
+      line-height: 1.45;
+      font-weight: 500;
+    }
+
+    /* Flow animation */
+    @keyframes flow {
+      to { stroke-dashoffset: -25; }
+    }
+    .flow-anim { animation: flow 2s linear infinite; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="sf-header">
+    <div>
+      <h1>Complementary Pathways ストック＆フロー図</h1>
+      <p>難民の移行プロセスを「蓄積（タンク）」と「流れ（パイプ・バルブ）」で捉え、8つの介入点がどこを開放するかを可視化</p>
+    </div>
+    <a href="index.html" class="back-link">
+      <i data-lucide="arrow-left" style="width:14px;height:14px;"></i>
+      実践フローに戻る
+    </a>
+  </div>
+
+  <!-- Legend -->
+  <div class="sf-legend">
+    <div class="sf-legend-item legend-stock">
+      <i data-lucide="database"></i>
+      ストック
+    </div>
+    <div class="sf-legend-item legend-flow">
+      <i data-lucide="filter"></i>
+      フロー
+    </div>
+    <div class="sf-legend-item legend-converter">
+      <span class="dot"></span>
+      コンバーター
+    </div>
+    <div class="sf-legend-item legend-leverage">
+      <i data-lucide="zap"></i>
+      レバレッジ・ポイント
+    </div>
+  </div>
+
+  <!-- Canvas -->
+  <div class="sf-canvas" id="sf-canvas">
+    <div class="sf-diagram-wrapper" id="sf-wrapper">
+      <div class="sf-diagram" id="sf-diagram">
+
+        <!-- SVG Layer -->
+        <svg viewBox="0 0 1400 780">
+          <defs>
+            <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#16a34a"/>
+            </marker>
+            <marker id="arrow-yellow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#eab308"/>
+            </marker>
+            <!-- Cloud symbol -->
+            <g id="cloud">
+              <path d="M 20 40 Q 20 20 40 20 Q 50 0 70 10 Q 90 -5 110 15 Q 130 10 130 30 Q 150 40 130 60 Q 140 80 120 80 Q 100 95 80 85 Q 60 100 40 80 Q 20 85 20 60 Q 0 50 20 40 Z" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2"/>
+            </g>
+            <!-- Valve symbol -->
+            <g id="valve">
+              <path d="M -12 -12 L 12 12 M -12 12 L 12 -12" stroke="#64748b" stroke-width="3"/>
+              <circle cx="0" cy="0" r="6" fill="white" stroke="#64748b" stroke-width="2"/>
+              <line x1="0" y1="-6" x2="0" y2="-20" stroke="#64748b" stroke-width="2"/>
+              <line x1="-12" y1="-20" x2="12" y2="-20" stroke="#64748b" stroke-width="3"/>
+            </g>
+          </defs>
+
+          <!-- Main pipe -->
+          <rect x="90" y="385" width="1140" height="16" fill="#e2e8f0" rx="2"/>
+          <path d="M 90 393 L 1230 393" stroke="#3b82f6" stroke-width="5" stroke-dasharray="12,8" class="flow-anim"/>
+
+          <!-- Cloud source -->
+          <use href="#cloud" transform="translate(100, 335) scale(0.85)"/>
+          <text x="164" y="378" text-anchor="middle" font-size="12" font-weight="bold" fill="#475569">送出国</text>
+
+          <!-- Valves -->
+          <use href="#valve" x="280" y="393"/>
+          <use href="#valve" x="650" y="393"/>
+          <use href="#valve" x="1020" y="393"/>
+
+          <!-- Converter influence lines (green dashed) -->
+          <path d="M 210 215 Q 210 310 270 335" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow-green)"/>
+          <path d="M 210 215 Q 350 270 630 335" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow-green)"/>
+          <path d="M 430 215 Q 430 310 290 335" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow-green)"/>
+          <path d="M 650 215 L 650 335" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow-green)"/>
+          <path d="M 780 580 Q 780 500 840 460" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow-green)"/>
+          <path d="M 780 580 Q 1020 500 1020 420" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow-green)"/>
+
+          <!-- Leverage intervention lines (yellow) -->
+          <path d="M 210 105 L 210 150" fill="none" stroke="#eab308" stroke-width="2.5" marker-end="url(#arrow-yellow)"/>
+          <path d="M 430 105 L 430 150" fill="none" stroke="#eab308" stroke-width="2.5" marker-end="url(#arrow-yellow)"/>
+          <path d="M 280 555 L 280 420" fill="none" stroke="#eab308" stroke-width="2.5" marker-end="url(#arrow-yellow)"/>
+          <path d="M 460 555 L 460 450" fill="none" stroke="#eab308" stroke-width="2.5" marker-end="url(#arrow-yellow)"/>
+          <path d="M 650 105 L 650 150" fill="none" stroke="#eab308" stroke-width="2.5" marker-end="url(#arrow-yellow)"/>
+          <path d="M 780 710 L 780 640" fill="none" stroke="#eab308" stroke-width="2.5" marker-end="url(#arrow-yellow)"/>
+          <path d="M 850 710 L 850 460" fill="none" stroke="#eab308" stroke-width="2.5" marker-end="url(#arrow-yellow)"/>
+          <path d="M 1020 240 L 1020 335" fill="none" stroke="#eab308" stroke-width="2.5" marker-end="url(#arrow-yellow)"/>
+        </svg>
+
+        <!-- HTML Overlay Layer -->
+        <div class="sf-overlay">
+
+          <!-- Valve Labels -->
+          <div class="valve-label" style="left:225px;top:340px;">募集・マッチング率</div>
+          <div class="valve-label" style="left:595px;top:340px;">ビザ発給・渡航率</div>
+          <div class="valve-label" style="left:965px;top:340px;">長期キャリア移行率</div>
+
+          <!-- Stock Tank 1 -->
+          <div class="stock-tank tank-1" style="left:380px;top:330px;width:140px;height:100px;">
+            <div class="stock-inner">
+              <div class="stock-water"></div>
+              <div class="stock-label">
+                <i data-lucide="users"></i>
+                <span class="title">準備中の候補者</span>
+                <span class="subtitle">（渡航前・教育中）</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stock Tank 2 -->
+          <div class="stock-tank tank-2" style="left:750px;top:330px;width:140px;height:100px;">
+            <div class="stock-inner">
+              <div class="stock-water"></div>
+              <div class="stock-label">
+                <i data-lucide="shield-check"></i>
+                <span class="title">受入国での活動</span>
+                <span class="subtitle">（就労・就学・生活）</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stock Tank 3 (Goal) -->
+          <div class="stock-tank tank-3" style="left:1130px;top:320px;width:150px;height:120px;">
+            <div class="stock-inner">
+              <div class="stock-water"></div>
+              <div class="stock-label">
+                <i data-lucide="graduation-cap"></i>
+                <span class="title">定住・永住<br>自立した人材</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Converters -->
+          <div class="converter" style="left:140px;top:165px;width:115px;height:40px;">資金リソース</div>
+          <div class="converter" style="left:365px;top:165px;width:115px;height:40px;">受入枠・求人</div>
+          <div class="converter" style="left:585px;top:165px;width:115px;height:40px;">制度・ビザの<br>柔軟性</div>
+          <div class="converter" style="left:710px;top:590px;width:125px;height:40px;">支援体制の<br>キャパシティ</div>
+
+          <!-- Leverage Point Cards -->
+          <div class="lev-card" style="left:115px;top:15px;">
+            <div class="lev-inner">
+              <div class="lev-title"><i data-lucide="zap"></i> Step 1: 資金調達</div>
+              <div class="lev-desc">難民本人が渡航時に支払う負担を最小限に抑えながら、持続的にプログラムを運営できる資金調達モデルを検討</div>
+            </div>
+          </div>
+          <div class="lev-card" style="left:335px;top:15px;">
+            <div class="lev-inner">
+              <div class="lev-title"><i data-lucide="zap"></i> Step 2: 受入先開拓</div>
+              <div class="lev-desc">受入主体となる企業や学校にアプローチし、コストや求められる支援、期待される効果について十分な説明を行う</div>
+            </div>
+          </div>
+          <div class="lev-card" style="left:555px;top:15px;">
+            <div class="lev-inner">
+              <div class="lev-title"><i data-lucide="zap"></i> Step 5: 受入手続き</div>
+              <div class="lev-desc">安全かつスムーズに滞在国から出国できるよう、関係機関との調整やビザ取得のサポートを行う</div>
+            </div>
+          </div>
+          <div class="lev-card" style="left:930px;top:140px;">
+            <div class="lev-inner">
+              <div class="lev-title"><i data-lucide="zap"></i> Step 8: 進路支援</div>
+              <div class="lev-desc">定住・永住を見据えた長期的なキャリアパスが構築できるよう、就労支援・進学支援を行う</div>
+            </div>
+          </div>
+          <div class="lev-card" style="left:185px;top:555px;">
+            <div class="lev-inner">
+              <div class="lev-title"><i data-lucide="zap"></i> Step 3: 候補者募集</div>
+              <div class="lev-desc">受入側のニーズに基づき、現地パートナーと連携して候補者を募集し、公正なスキル評価や事前の期待値調整を行う</div>
+            </div>
+          </div>
+          <div class="lev-card" style="left:395px;top:555px;">
+            <div class="lev-inner">
+              <div class="lev-title"><i data-lucide="zap"></i> Step 4: 入国前教育</div>
+              <div class="lev-desc">語学・職業教育やオリエンテーションを提供し、スキル面での準備を行う</div>
+            </div>
+          </div>
+          <div class="lev-card" style="left:680px;top:700px;">
+            <div class="lev-inner">
+              <div class="lev-title"><i data-lucide="zap"></i> Step 6: 受入体制整備</div>
+              <div class="lev-desc">支援団体や地域コミュニティのネットワークを形成し、難民が円滑に地域に統合できる環境を整備</div>
+            </div>
+          </div>
+          <div class="lev-card" style="left:895px;top:555px;">
+            <div class="lev-inner">
+              <div class="lev-title"><i data-lucide="zap"></i> Step 7: 定住支援</div>
+              <div class="lev-desc">難民特有の事情を考慮し、トラウマに配慮したケアや、在留資格等に関する法的支援・定住支援を行う</div>
+            </div>
+          </div>
+
+        </div><!-- /sf-overlay -->
+      </div><!-- /sf-diagram -->
+    </div><!-- /sf-wrapper -->
+  </div><!-- /sf-canvas -->
+
+  <script>
+    lucide.createIcons();
+
+    // Auto-scale diagram to fit viewport
+    function scaleDiagram() {
+      const canvas = document.getElementById('sf-canvas');
+      const wrapper = document.getElementById('sf-wrapper');
+      const diagram = document.getElementById('sf-diagram');
+      const dw = 1400, dh = 780;
+      const cw = canvas.clientWidth - 16;
+      const ch = canvas.clientHeight - 16;
+      const scale = Math.min(cw / dw, ch / dh, 1);
+      wrapper.style.width = (dw * scale) + 'px';
+      wrapper.style.height = (dh * scale) + 'px';
+      diagram.style.transform = 'scale(' + scale + ')';
+      diagram.style.transformOrigin = 'top left';
+    }
+    scaleDiagram();
+    window.addEventListener('resize', scaleDiagram);
+  </script>
+</body>
+</html>
