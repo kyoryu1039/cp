@@ -33,6 +33,331 @@
 
   </div>
 
+  <!--
+    3. コンテンツソース（ここがこのアプリの「本文」）
+    以前はこの内容が app.js 内の JS 配列(flowData)として埋め込まれていて、
+    HTMLとしては存在しなかった。共同編集エディタ等で中身を編集できるように、
+    ここに実体のHTMLとして持たせる形に変更した。app.js はページ読み込み時に
+    ここを読み取ってから、これまで通りの画面組み立てロジックを実行する。
+    表示はしないが、削除・非表示化はしないこと（JSが参照しているため）。
+  -->
+  <div id="step-source" hidden>
+  <section class="step" data-step-id="1">
+    <p class="step-shorttitle">資金調達</p>
+    <h2 class="step-title">資金調達モデルの構築</h2>
+    <p class="step-point">難民本人が渡航時に支払う<strong>負担を最小限に抑え</strong>ながら、<strong>持続的にプログラムを運営</strong>できる<strong>資金調達モデル</strong>を検討</p>
+    <ul class="step-checklist">
+      <li>難民本人が前払いできない初期費用（渡航費やビザ代等）をカバーする仕組みが構築されているか？</li>
+      <li>多様な資金源（大学、財団、民間等）に基づく分散型の資金モデルになっているか？</li>
+    </ul>
+    <div class="step-stakeholders">
+      <ul class="stakeholder-list stakeholder-hub">
+        <li>資金提供者</li>
+        <li>中間組織</li>
+      </ul>
+      <ul class="stakeholder-list stakeholder-host">
+        <li>受入機関</li>
+      </ul>
+      <ul class="stakeholder-list stakeholder-origin">
+        <li>現地パートナー</li>
+      </ul>
+    </div>
+    <ul class="step-actions">
+      <li class="action-item">
+        <span class="action-role">ハブ</span>
+        <span class="action-project">各種</span>
+        <span class="action-country">グローバル</span>
+        <p class="action-text">財団等から初期運営費や渡航費ローンを調達</p>
+        <a class="action-source" href="https://www.migrationpolicy.org/research/refugee-resettlement-complementary-pathways" target="_blank" rel="noopener noreferrer">Fratzke - Refugee Resettlement and Complementary Pathways</a>
+      </li>
+      <li class="action-item">
+        <span class="action-role">ハブ</span>
+        <span class="action-project">KOTO SIB</span>
+        <span class="action-country">フィンランド</span>
+        <p class="action-text">就労成功時に投資家にリターンを支払う成果報酬型モデル（SIB）を活用</p>
+        <a class="action-source" href="https://doi.org/10.1080/15562948.2024.2385980" target="_blank" rel="noopener noreferrer">Davitti &amp; Vankova (2025) - From Funding to Financing</a>
+      </li>
+      <li class="action-item">
+        <span class="action-role">受入側</span>
+        <span class="action-project">WUSC</span>
+        <span class="action-country">カナダ</span>
+        <p class="action-text">大学の授業料免除や学生の少額課徴金等で費用をカバー</p>
+        <a class="action-source" href="https://www.migrationpolicy.org/research/refugee-resettlement-complementary-pathways" target="_blank" rel="noopener noreferrer">Fratzke - Refugee Resettlement and Complementary Pathways</a>
+      </li>
+      <li class="action-item">
+        <span class="action-role">送出し側</span>
+        <span class="action-project">RefugePoint等</span>
+        <span class="action-country">ケニア</span>
+        <p class="action-text">パスポート取得等の少額の初期費用を現地で支援</p>
+        <a class="action-source" href="https://www.talentbeyondboundaries.org/s/TBB-Global-Evaluation-2020-Final-External.pdf" target="_blank" rel="noopener noreferrer">TBB+Global+Evaluation+2020+Final+(External).pdf</a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="step" data-step-id="2">
+    <p class="step-shorttitle">受入先開拓</p>
+    <h2 class="step-title">受入れ先の開拓</h2>
+    <p class="step-point">受入主体となる<strong>企業や学校にアプローチ</strong>し、受入れにあたり<strong>生じるコストや求められる支援</strong>、<strong>期待される効果について十分な説明</strong>を行う</p>
+    <ul class="step-checklist">
+      <li>受入機関に対して、受入れにかかるコストと求める支援の責任範囲を事前に明確に提示しているか？</li>
+      <li>自治体、商工会議所、大学コンソーシアムなど、多様なアクターを巻き込んで受入枠を開拓しているか？</li>
+    </ul>
+    <div class="step-stakeholders">
+      <ul class="stakeholder-list stakeholder-hub">
+        <li>中間組織</li>
+      </ul>
+      <ul class="stakeholder-list stakeholder-host">
+        <li>就業支援事業者</li>
+        <li>受入機関</li>
+      </ul>
+      <ul class="stakeholder-list stakeholder-origin">
+
+      </ul>
+    </div>
+    <ul class="step-actions">
+      <li class="action-item">
+        <span class="action-role">ハブ・受入側</span>
+        <span class="action-project">Displaced Talent Mobility Pilot</span>
+        <span class="action-country">イギリス</span>
+        <p class="action-text">企業に人材の売り込み（ピッチ）を実施し、求人枠を獲得</p>
+        <a class="action-source" href="https://www.migrationpolicy.org/research/employers-refugee-labor-pathways" target="_blank" rel="noopener noreferrer">Dorst - Engaging Employers in Growing Refugee Labor Pathways</a>
+      </li>
+      <li class="action-item">
+        <span class="action-role">ハブ・受入側</span>
+        <span class="action-project">Healthcare Pilot (NHS)</span>
+        <span class="action-country">イギリス</span>
+        <p class="action-text">業界団体等を巻き込み、複数の雇用主に一括アプローチ</p>
+        <a class="action-source" href="https://www.migrationpolicy.org/research/employers-refugee-labor-pathways" target="_blank" rel="noopener noreferrer">Dorst - Engaging Employers in Growing Refugee Labor Pathways</a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="step" data-step-id="3">
+    <p class="step-shorttitle">候補者募集</p>
+    <h2 class="step-title">候補者の募集・選抜</h2>
+    <p class="step-point">受入側の<strong>具体的なニーズに基づき</strong>、現地パートナーと連携して候補者を募集し、<strong>公正なスキル評価</strong>や<strong>事前の期待値調整</strong>を行う</p>
+    <ul class="step-checklist">
+      <li>信頼のある現地NGOや難民主導組織と連携し、候補者を発掘する関係性を構築しているか？</li>
+      <li>正確な情報を周知し、候補者に誤った期待を持たせないための事前調整（期待値調整）を行っているか？</li>
+    </ul>
+    <div class="step-stakeholders">
+      <ul class="stakeholder-list stakeholder-hub">
+        <li>中間組織</li>
+      </ul>
+      <ul class="stakeholder-list stakeholder-host">
+        <li>受入機関</li>
+      </ul>
+      <ul class="stakeholder-list stakeholder-origin">
+        <li>現地パートナー</li>
+      </ul>
+    </div>
+    <ul class="step-actions">
+      <li class="action-item">
+        <span class="action-role">ハブ</span>
+        <span class="action-project">TBB</span>
+        <span class="action-country">カナダ・豪州</span>
+        <p class="action-text">人材DBを活用し、ニーズとスキルをマッチング</p>
+        <a class="action-source" href="https://doi.org/10.1007/s11205-023-03130-9" target="_blank" rel="noopener noreferrer">Higgins et al. (2023) - Refugees as Skilled Migrants</a>
+      </li>
+      <li class="action-item">
+        <span class="action-role">送出し側</span>
+        <span class="action-project">RefugePoint等</span>
+        <span class="action-country">ケニア</span>
+        <p class="action-text">現地NGO等がスクリーニングや履歴書作成を支援し、コミュニティへ情報周知と期待値調整を行う</p>
+        <a class="action-source" href="https://www.talentbeyondboundaries.org/s/TBB-Global-Evaluation-2020-Final-External.pdf" target="_blank" rel="noopener noreferrer">TBB+Global+Evaluation+2020+Final+(External).pdf</a>
+      </li>
+      <li class="action-item">
+        <span class="action-role">受入側</span>
+        <span class="action-project">EMPP</span>
+        <span class="action-country">カナダ</span>
+        <p class="action-text">企業や学校が書類選考やオンライン面接で採用・入学を決定</p>
+        <a class="action-source" href="https://www.migrationpolicy.org/research/employers-refugee-labor-pathways" target="_blank" rel="noopener noreferrer">Dorst - Engaging Employers in Growing Refugee Labor Pathways</a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="step" data-step-id="4">
+    <p class="step-shorttitle">入国前教育</p>
+    <h2 class="step-title">入国前教育の実施</h2>
+    <p class="step-point"><strong>語学・職業教育やオリエンテーション</strong>を提供し、<strong>スキル面での準備</strong>を行う</p>
+    <ul class="step-checklist">
+      <li>受入国で求められる言語要件や実務スキルに直結した事前研修を提供しているか？</li>
+      <li>受入国での生活インフラや職場文化に関する、実務的なオリエンテーションが含まれているか？</li>
+    </ul>
+    <div class="step-stakeholders">
+      <ul class="stakeholder-list stakeholder-hub">
+
+      </ul>
+      <ul class="stakeholder-list stakeholder-host">
+
+      </ul>
+      <ul class="stakeholder-list stakeholder-origin">
+        <li>現地パートナー</li>
+      </ul>
+    </div>
+    <ul class="step-actions">
+      <li class="action-item">
+        <span class="action-role">送出し側</span>
+        <span class="action-project">IOM等 / Triple Win等</span>
+        <span class="action-country">世界各地</span>
+        <p class="action-text">渡航前の第一庇護国で、現地の機関が語学・文化オリエンテーションや実務的な職業訓練を直接提供</p>
+        <a class="action-source" href="https://www.migrationpolicy.org/research/refugee-resettlement-complementary-pathways" target="_blank" rel="noopener noreferrer">Fratzke - Refugee Resettlement and Complementary Pathways</a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="step" data-step-id="5">
+    <p class="step-shorttitle">入国手続き</p>
+    <h2 class="step-title">入国に向けた手続き</h2>
+    <p class="step-point"><strong>安全かつスムーズに滞在国から出国</strong>できるよう、<strong>関係機関との調整</strong>や<strong>ビザ取得のサポート</strong>を行う</p>
+    <ul class="step-checklist">
+      <li>第一庇護国から合法的に出国するための調整を現地政府・国際機関等と交渉・合意できているか？</li>
+      <li>パスポート等の代替文書の許容やビザ要件の緩和について、受入国政府と交渉・合意できているか？</li>
+    </ul>
+    <div class="step-stakeholders">
+      <ul class="stakeholder-list stakeholder-hub">
+        <li>中間組織</li>
+      </ul>
+      <ul class="stakeholder-list stakeholder-host">
+        <li>受入国政府</li>
+      </ul>
+      <ul class="stakeholder-list stakeholder-origin">
+        <li>国連・政府機関</li>
+      </ul>
+    </div>
+    <ul class="step-actions">
+      <li class="action-item">
+        <span class="action-role">ハブ</span>
+        <span class="action-project">Displaced Talent Mobility Pilot</span>
+        <span class="action-country">イギリス</span>
+        <p class="action-text">代替書類の交渉やビザ申請の進行を実務的に管理</p>
+        <a class="action-source" href="https://www.migrationpolicy.org/research/refugee-labor-mobility" target="_blank" rel="noopener noreferrer">Zanzuchi - Building Refugee-Inclusive Labour Mobility Pathways</a>
+      </li>
+      <li class="action-item">
+        <span class="action-role">受入側</span>
+        <span class="action-project">EMPP</span>
+        <span class="action-country">カナダ</span>
+        <p class="action-text">ビザ要件を緩和し、迅速かつ優先的に審査・発給</p>
+        <a class="action-source" href="https://www.migrationpolicy.org/research/employers-refugee-labor-pathways" target="_blank" rel="noopener noreferrer">Dorst - Engaging Employers in Growing Refugee Labor Pathways</a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="step" data-step-id="6">
+    <p class="step-shorttitle">受入体制整備</p>
+    <h2 class="step-title">地域の受入れ体制の構築</h2>
+    <p class="step-point">支援団体や<strong>地域コミュニティのネットワークを形成</strong>し、難民が<strong>円滑に地域に統合できる環境</strong>を整備</p>
+    <ul class="step-checklist">
+      <li>当事者コミュニティや市民グループを含めた、社会全体（Whole-of-Society）での受入体制を構築できているか？</li>
+      <li>受入機関と地域の支援団体等の間で、役割分担が明確になっているか？</li>
+    </ul>
+    <div class="step-stakeholders">
+      <ul class="stakeholder-list stakeholder-hub">
+
+      </ul>
+      <ul class="stakeholder-list stakeholder-host">
+        <li>伴走支援団体</li>
+        <li>自治体</li>
+      </ul>
+      <ul class="stakeholder-list stakeholder-origin">
+
+      </ul>
+    </div>
+    <ul class="step-actions">
+      <li class="action-item">
+        <span class="action-role">受入側</span>
+        <span class="action-project">Healthcare Pilot</span>
+        <span class="action-country">イギリス</span>
+        <p class="action-text">地域のボランティアネットワークが、新しく到着した医療従事者（難民）を地域社会に受け入れ、定住に向けた生活の立ち上げを支援</p>
+        <a class="action-source" href="https://www.migrationpolicy.org/research/employers-refugee-labor-pathways" target="_blank" rel="noopener noreferrer">Dorst - Engaging Employers in Growing Refugee Labor Pathways</a>
+      </li>
+      <li class="action-item">
+        <span class="action-role">受入側</span>
+        <span class="action-project">WUSC</span>
+        <span class="action-country">カナダ</span>
+        <p class="action-text">大学内の学生グループがスポンサーとなり生活を支援</p>
+        <a class="action-source" href="https://www.vitalsource.com/products/possibilities-of-educational-pathways-to-refugee-william-mude-sally-baker-v9781916985292" target="_blank" rel="noopener noreferrer">Mude &amp; Baker - Possibilities of Educational Pathways</a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="step" data-step-id="7">
+    <p class="step-shorttitle">定住支援</p>
+    <h2 class="step-title">定住支援</h2>
+    <p class="step-point"><strong>難民特有の事情を考慮</strong>し、<strong>トラウマに配慮したケア</strong>や、在留資格等に関する<strong>法的支援・定住支援</strong>を行う</p>
+    <ul class="step-checklist">
+      <li>在留資格やメンタルケアに関して、専門家による相談体制が構築されているか？</li>
+      <li>入国直後から住居の確保や生活環境の整備をサポートする体制が構築されているか？</li>
+    </ul>
+    <div class="step-stakeholders">
+      <ul class="stakeholder-list stakeholder-hub">
+
+      </ul>
+      <ul class="stakeholder-list stakeholder-host">
+        <li>伴走支援団体</li>
+        <li>自治体</li>
+      </ul>
+      <ul class="stakeholder-list stakeholder-origin">
+
+      </ul>
+    </div>
+    <ul class="step-actions">
+      <li class="action-item">
+        <span class="action-role">受入側</span>
+        <span class="action-project">Pathways Japan等</span>
+        <span class="action-country">日本</span>
+        <p class="action-text">地域のNGOや支援団体が、語学学習やトラウマケア、職場・学校への統合支援を継続的に実施</p>
+        <a class="action-source" href="https://doi.org/10.1080/15562948.2025.2573941" target="_blank" rel="noopener noreferrer">Husseini (2025) - International Education as Complementary Pathways</a>
+      </li>
+      <li class="action-item">
+        <span class="action-role">受入側</span>
+        <span class="action-project">Skilled Refugee Labour</span>
+        <span class="action-country">豪州</span>
+        <p class="action-text">企業が定住支援機関に費用を支払い、専門的な伴走支援を委託</p>
+        <a class="action-source" href="https://www.migrationpolicy.org/research/employers-refugee-labor-pathways" target="_blank" rel="noopener noreferrer">Dorst - Engaging Employers in Growing Refugee Labor Pathways</a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="step" data-step-id="8">
+    <p class="step-shorttitle">進路支援</p>
+    <h2 class="step-title">進路支援</h2>
+    <p class="step-point"><strong>定住・永住を見据えた</strong><strong>長期的なキャリアパスが構築</strong>できるよう、<strong>就労支援・進学支援</strong>を行う</p>
+    <ul class="step-checklist">
+      <li>長期的なキャリア形成に向けた語学・職業能力の向上のための仕組みがあるか？</li>
+      <li>就職活動を伴走支援する体制が構築されているか？</li>
+    </ul>
+    <div class="step-stakeholders">
+      <ul class="stakeholder-list stakeholder-hub">
+
+      </ul>
+      <ul class="stakeholder-list stakeholder-host">
+        <li>受入機関</li>
+        <li>就業支援事業者</li>
+      </ul>
+      <ul class="stakeholder-list stakeholder-origin">
+
+      </ul>
+    </div>
+    <ul class="step-actions">
+      <li class="action-item">
+        <span class="action-role">受入側</span>
+        <span class="action-project">Leadership for Syria等</span>
+        <span class="action-country">ドイツ</span>
+        <p class="action-text">企業や大学、就業支援事業者が、本人の免許取得や卒業後のキャリア形成を長期的に支援</p>
+        <a class="action-source" href="https://www.migrationpolicy.org/research/refugee-resettlement-complementary-pathways" target="_blank" rel="noopener noreferrer">Fratzke - Refugee Resettlement and Complementary Pathways</a>
+      </li>
+      <li class="action-item">
+        <span class="action-role">受入側</span>
+        <span class="action-project">EMPP等</span>
+        <span class="action-country">カナダ</span>
+        <p class="action-text">就労や進学を通じて、定住・永住へのルートに乗るためのサポートを行う</p>
+        <a class="action-source" href="https://www.unhcr.ca/wp-content/uploads/2019/07/The-Economic-Mobility-Pathways-Project-Policy-Principles-and-Lessons-Learned-June-2019.pdf" target="_blank" rel="noopener noreferrer">Heather - The Economic Mobility Pathways Project</a>
+      </li>
+    </ul>
+  </section>
+  </div>
+
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="app.js"></script>
